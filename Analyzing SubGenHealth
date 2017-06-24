@@ -1,0 +1,70 @@
+# ANALYSES##
+
+# Split the dataset into training and test set. 
+ind <- sample(2, nrow(Cleandata2015), replace = TRUE, prob = c(0.8, 0.2))
+train <- Cleandata2015[ind==1, ]
+test <- Cleandata2015[ind==2, ]
+
+# Start with analyzing the aspect: Subjective General Health
+## Perform the Ordinal Logistic Regression/ Proportional Odds Logistic Regression 
+modelSubGenHealth <- polr(SubGenHealth ~ IrregularHours, train, Hess = TRUE)
+summary(modelSubGenHealth)
+
+## Look at the contrasts directly
+contrasts(train$IrregularHours)
+
+## store table, ## calculate and store p values
+## Combined table
+## Caculating p-Value ## Between brackets so that everything will be in one table 
+(ctablesubgenhealth <- coef(summary(modelSubGenHealth)))
+pvaluesSubGenHealth <- pnorm(abs(ctablesubgenhealth[, "t value"]), lower.tail = FALSE) * 2
+(ctablesubgenhealth <- cbind(ctablesubgenhealth, "p value" = pvaluesSubGenHealth))
+
+# Confidence intervals
+ci <- confint(modelSubGenHealth)
+exp(coef(modelSubGenHealth))
+
+# library("stargazer")
+# install.packages("stargazer")
+# stargazer(modelSubGenHealth, type = "html", out = "modelSubGenHealth.htm")
+
+## convert the coefficients into odds ratios
+exp(coef(modelSubGenHealth))
+
+# PREDICT
+predict(modelSubGenHealth, newdata = data.frame(IrregularHours = "often"), type="probs")
+
+# Predicting probabilities being poor <> excellent. 
+
+# Interacting variables Gender and Age 
+# first test whether there is a difference in subjective health for gender using Mann-Whitney test
+wilcox.test((as.numeric(SubGenHealth)) ~ Gender, data = Cleandata2015)
+## 0,3; no significance 
+
+# Gender
+modelSubGenHealthGender <- polr(SubGenHealth ~ IrregularHours * Gender, train, Hess = TRUE)
+summary(modelSubGenHealthGender)
+
+# Age
+modelSubGenHealthAge <- polr(SubGenHealth ~ IrregularHours * Age, train, Hess = TRUE)
+summary(modelSubGenHealthAge)
+
+# Adding the control variables one by one 
+# Education
+modelSubGenHealthEdu <- polr(SubGenHealth ~ IrregularHours + Education, train, Hess = TRUE)
+summary(modelSubGenHealthEdu)
+
+
+# Education + Mentally Dem
+modelSubGenHealthMentDem <- polr(SubGenHealth ~ IrregularHours + Mentdem, train, Hess = TRUE)
+summary(modelSubGenHealthMentDem)
+
+# Education + Mentally Dem + Physically Dem
+modelSubGenHealthPhysDem <- polr(SubGenHealth ~ IrregularHours + Mentdem, train, Hess = TRUE)
+summary(modelSubGenHealthPhysDem)
+
+
+
+
+
+
