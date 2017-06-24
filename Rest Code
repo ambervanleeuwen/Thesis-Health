@@ -1,0 +1,123 @@
+
+
+## Work hour schedule (IrregularHours) > Medical Specialist at the hospital (MedSp)
+## create crosstabs to see assess the distribution 
+xtabs(~IrregularHours+MedSp, Cleandata2015)
+
+## Perform the Ordinal Logistic Regression/ Proportional Odds Logistic Regression 
+modelMedSp <- polr(MedSp~IrregularHours, train, Hess = TRUE)
+summary(modelMedSp)
+
+## store table, ## calculate and store p values
+## Combined table
+## Caculating p-Value ## Between brackets so that everything will be in one table 
+(ctablemedsp <- coef(summary(modelMedSp)))
+pvaluesMedSp <- pnorm(abs(ctablemedsp[, "t value"]), lower.tail = FALSE) * 2
+(ctablemedsp <- cbind(ctablemedsp, "p value" = pvaluesMedSp))
+
+## convert the coefficients into odds ratios
+exp(coef(modelMedSp))
+
+## PREDICT
+predict(modelMedSp, newdata = data.frame(IrregularHours = "3"), type="probs")
+
+
+
+
+
+
+
+## MedSp
+# Test the relation between work hour schedule (IrregularHours) and Subjective General Health( SubGenHealth)
+xtabs(~IrregularHours+MedSp, Cleandata2015)
+
+## Perform the Ordinal Logistic Regression/ Proportional Odds Logistic Regression 
+## for the relation IrregularHours and SubGenHealth.
+modelMedSp <- polr(MedSp~IrregularHours, train, Hess = TRUE)
+summary(modelMedSp)
+
+## store table
+(ctable <- coef(summary(modelMedSp)))
+
+## calculate and store p values
+pvaluesMedSp <- pnorm(abs(ctable[, "t value"]), lower.tail = FALSE) * 2
+
+## Combined table
+## Caculating p-Value ## Between brackets so that everything will be in one table 
+(ctable <- cbind(ctable, "p value" = pvaluesMedSp))
+
+## convert the coefficients into odds ratios
+exp(coef(modelMedSp))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Prediction, train for the first 3 rows. 
+predSubGenHealth <- predict(modelSubGenHealth, train[1:3,], type="prob")
+print(predSubGenHealth, digits = 4)
+
+
+# Test the relation between work hour schedule (IrregularHours) and Medical Specialist at Hospital (MedSp). 
+xtabs(~IrregularHours+MedSp, Cleandata2015)
+
+## Perform the Ordinal Logistic Regression/ Proportional Odds Logistic Regression 
+## for the relation IrregularHours and MedSp
+modelMedSp <- polr(MedSp~IrregularHours, train, Hess = TRUE)
+summary(modelMedSp)
+
+
+
+
+
+
+
+
+
+
+
+model <- polr(MedSp~IrregularHours, train, Hess = TRUE)
+
+summary(model)
+
+model <- polr(SubGenHealth~IrregularHours, train, Hess = TRUE)
+summary(model)
+
+
+model <- polr(SubGenHealth~IrregularHours, train, Hess = TRUE)
+summary(model)
+
+model <- polr(SubGenHealth~IrregularHours, train, Hess = TRUE)
+summary(model)
+
+
+xtabs(~IrregularHours+Physio, Mergedset)
+
+ggplot() +
+  geom_bar(data = Mergedset, mapping = aes(x = Education))
+
+
++
+  scale_y_continuous(name = "Frequency") +
+  scale_x_continuous(name = "General Health") 
+
+
+
+
+xtabs(~IrregularHours+MedSp, Cleandata2015)
+xtabs(~IrregularHours+Physio, Cleandata2015)
+xtabs(~IrregularHours+Psych, Cleandata2015)
+
+
+##predict(modelSubGenHealth, train, type="probs")
+##exp(cbind(OR = coef(modelSubGenHealth), confint(modelSubGenHealth)))
