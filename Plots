@@ -1,0 +1,85 @@
+
+# Subjective General Health
+
+# Show distributions that we are then going to test.
+
+
+## create crosstabs to see assess the distribution 
+xtabs(~IrregularHours+SubGenHealth, Cleandata2015)
+# Sub gen Health and Irregular work hours
+ggplot() + 
+  geom_bar(data = Cleandata2015, mapping = aes(x = SubGenHealth, fill = IrregularHours)) +
+  ggtitle("Work hours and Subjective General Health") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(axis.title.x = element_blank()) +
+  scale_y_continuous(name = "Frequency") 
+#  theme(legend.title = "Irregular Hours")
+
+# Interaction Values 
+
+# Sub gen Health and Gender
+ggplot() + 
+  geom_bar(data = Cleandata2015, mapping = aes(x = SubGenHealth, fill = Gender)) +
+  ggtitle("Gender and Subjective General Health") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(axis.title.x = element_blank()) +
+  scale_y_continuous(name = "Frequency") 
+# theme(legend.title = "Irregular Hours")
+
+# first test whether there is a significant difference, otherwise use as
+# a control factor instead
+
+wilcox.test(as.numeric(SubGenHealth) ~ Gender, data = Cleandata2015)
+# Not significnt > Use as control factor instead. 
+ 
+# Sub gen Health and Age
+ggplot() + 
+  geom_bar(data = Cleandata2015, mapping = aes(x = SubGenHealth, fill = Age)) +
+  ggtitle("Age and Subjective General Health") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(axis.title.x = element_blank()) +
+  scale_y_continuous(name = "Frequency") 
+# theme(legend.title = "Irregular Hours")
+
+# first test whether there is a significant difference, otherwise use as
+# a control factor instead
+
+kruskal.test(as.numeric(SubGenHealth) ~ Age, data = Cleandata2015) 
+
+# Outcome is significant, and age will therefore be used as an interaction 
+# variable for this aspect of health
+
+
+
+# Control variables
+# Sub gen Health and Education
+ggplot() + 
+  geom_bar(data = Cleandata2015, mapping = aes(x = SubGenHealth, fill = Education)) +
+  ggtitle("Education and Subjective General Health") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(axis.title.x = element_blank()) +
+  scale_y_continuous(name = "Frequency") 
+# theme(legend.title = "Irregular Hours")
+
+# Sub gen Health and MentDem
+ggplot() + 
+  geom_bar(data = Cleandata2015, mapping = aes(x = SubGenHealth, fill = Mentdem)) +
+  ggtitle("Mentdem and Subjective General Health") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(axis.title.x = element_blank()) +
+  scale_y_continuous(name = "Frequency") 
+# theme(legend.title = "Irregular Hours")
+
+# Sub gen Health and PhysDem
+ggplot() + 
+  geom_bar(data = Cleandata2015, mapping = aes(x = SubGenHealth, fill = Physdem)) +
+  ggtitle("Physdem and Subjective General Health") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(axis.title.x = element_blank()) +
+  scale_y_continuous(name = "Frequency") 
+# theme(legend.title = "Irregular Hours")
+
+
+
+
+
