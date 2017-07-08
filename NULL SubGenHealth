@@ -1,0 +1,41 @@
+# ANALYSES##
+xtabs(~IrregularHours+SubGenHealth, Cleandata2015)
+kruskal.test(as.numeric(IrregularHours)~Age, data = Cleandata2015)
+# Answer; not significantly different. Hence it can be rejected that men and women
+## Look at the contrasts directly
+contrasts(train$IrregularHours)
+# Firstly, it is important to test whether there are associations between variables. 
+# Kruskal-Wallis test to test for a difference of subjective general health and others between different levels of Education 
+kruskal.test(SubGenHealth ~ MedSp, data = Cleandata2015)
+ggplot(data = Cleandata2015, mapping = aes(x =SubGenHealth, fill = MedSp)) +
+  geom_bar(position = "dodge")
+
+# First explanatory: 
+ggplot() + 
+  geom_bar(data = Cleandata2015, mapping = aes(x =SubGenHealth, fill = IrregularHours), position="dodge") +
+  ggtitle("Work hour schedule and Subjective General Health") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(axis.title.x = element_blank()) +
+  scale_y_continuous(name = "Frequency") +
+  scale_x_discrete(labels = c("Moderate", "Good", "Very good", "Excellent")) +
+  theme(legend.title = element_blank())
+
+
+## Perform the Ordinal Logistic Regression/ Proportional Odds Logistic Regression 
+# This table outputs coeffient table including the value of the coefficients, stanrdard errors,
+# t values, estimates for the intercepts, residual deviance ans AIC. AIC is the information criteria.
+# Less is better
+
+# Model SubGenHealth without predictor. 
+nullmodelSubGenHealth <- polr(SubGenHealth ~ 1, Cleandata2015, Hess = TRUE, method = "probit")
+summary(nullmodelSubGenHealth) 
+
+# Model SubGenHealth with predictor 
+withmodelSubGenHealth <- polr(SubGenHealth ~ IrregularHours, Cleandata2015, Hess = TRUE, method = "probit")
+summary(withmodelSubGenHealth) 
+
+(ctablewithmodelSubGenHealth <- coef(summary(withmodelSubGenHealth)))
+pvalueswithmodelSubGenHealth <- pnorm(abs(ctablewithmodelSubGenHealth[, "t value"]), lower.tail = FALSE) * 2
+(ctablewithmodelSubGenHealth <- cbind(ctablewithmodelSubGenHealth, "p value" = round(pvalueswithmodelSubGenHealth,3)))
+
+
