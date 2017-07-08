@@ -1,0 +1,33 @@
+
+# Control Variables
+
+controlmodelSubGenHealth <- polr(SubGenHealth ~ Age + Education + Physdem + Mentdem,
+  Cleandata2015, Hess = TRUE)
+summary(controlmodelSubGenHealth)
+
+(ctablecontrolmodelSubGenHealth <- coef(summary(controlmodelSubGenHealth)))
+pvaluescontrolmodelSubGenHealth <- pnorm(abs(ctablecontrolmodelSubGenHealth[, "t value"]), lower.tail = FALSE) * 2
+(ctablecontrolmodelSubGenHealth <- cbind(ctablecontrolmodelSubGenHealth, 
+  "p value" = round(pvaluescontrolmodelSubGenHealth,3)))
+
+
+# Control with pred
+withcontrolmodelSubGenHealth <- polr(SubGenHealth ~ IrregularHours + Age + Education + Physdem + Mentdem,
+  Cleandata2015, Hess = TRUE)
+summary(withcontrolmodelSubGenHealth)
+
+(ctablewithcontrolmodelSubGenHealth <- coef(summary(withcontrolmodelSubGenHealth)))
+pvalueswithcontrolmodelSubGenHealth <- pnorm(abs(ctablewithcontrolmodelSubGenHealth[, "t value"]), lower.tail = FALSE) * 2
+(ctablewithcontrolmodelSubGenHealth <- cbind(ctablewithcontrolmodelSubGenHealth, 
+  "p value" = round(pvalueswithcontrolmodelSubGenHealth,3)))
+
+# Gender and Age
+genderagemodelSubGenHealth <- polr(SubGenHealth ~ Gender:Age,
+    Cleandata2015, Hess = TRUE)
+summary(genderagemodelSubGenHealth)
+
+# Gender and Age + Pred
+
+genderageplusmodelSubGenHealth <- polr(SubGenHealth ~ Gender:Age:IrregularHours,
+                                   Cleandata2015, Hess = TRUE)
+summary(genderagemodelSubGenHealth)
