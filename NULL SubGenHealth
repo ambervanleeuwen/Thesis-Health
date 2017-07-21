@@ -1,12 +1,3 @@
-# ANALYSES##
-xtabs(~IrregularHours+SubGenHealth, Cleandata2015)
-kruskal.test(as.numeric(IrregularHours)~Age, data = Cleandata2015)
-# Answer; not significantly different. Hence it can be rejected that men and women
-## Look at the contrasts directly
-contrasts(train$IrregularHours)
-# Firstly, it is important to test whether there are associations between variables. 
-# Kruskal-Wallis test to test for a difference of subjective general health and others between different levels of Education 
-kruskal.test(SubGenHealth ~ MedSp, data = Cleandata2015)
 ggplot(data = Cleandata2015, mapping = aes(x =SubGenHealth, fill = MedSp)) +
   geom_bar(position = "dodge")
 
@@ -19,7 +10,6 @@ ggplot() +
   scale_y_continuous(name = "Frequency") +
   scale_x_discrete(labels = c("Moderate", "Good", "Very good", "Excellent")) +
   theme(legend.title = element_blank())
-
 
 ## Perform the Ordinal Logistic Regression/ Proportional Odds Logistic Regression 
 # This table outputs coeffient table including the value of the coefficients, stanrdard errors,
@@ -37,5 +27,3 @@ summary(withmodelSubGenHealth)
 (ctablewithmodelSubGenHealth <- coef(summary(withmodelSubGenHealth)))
 pvalueswithmodelSubGenHealth <- pnorm(abs(ctablewithmodelSubGenHealth[, "t value"]), lower.tail = FALSE) * 2
 (ctablewithmodelSubGenHealth <- cbind(ctablewithmodelSubGenHealth, "p value" = round(pvalueswithmodelSubGenHealth,3)))
-
-
