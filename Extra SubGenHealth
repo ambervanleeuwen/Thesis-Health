@@ -1,64 +1,36 @@
+(ctableinteragemodelSubGenHealth <- coef(summary(interagemodelSubGenHealth)))
+pvaluesinteragemodelSubGenHealth <- pnorm(abs(ctableinteragemodelSubGenHealth[, "t value"]), lower.tail = FALSE) * 2
+(ctableinteragemodelSubGenHealth <- cbind(ctableinteragemodelSubGenHealth, 
+  "p value" = round(pvaluesinteragemodelSubGenHealth,3)))
 
-# Age
-agemodelSubGenHealth <- polr(SubGenHealth ~ Age, Cleandata2015, Hess = TRUE)
+# Gender + Pred
+gendmodelSubGenHealth <- polr(SubGenHealth ~ Gender + IrregularHours, Cleandata2015, Hess = TRUE)
+summary(gendmodelSubGenHealth)
+
+# Gender * Pred 
+plusgendmodelSubGenHealth <- polr(SubGenHealth ~ Gender * IrregularHours, Cleandata2015, Hess = TRUE)
+summary(plusgendmodelSubGenHealth)
+
+# Age + Pred
+agemodelSubGenHealth <- polr(SubGenHealth ~ Age + IrregularHours, Cleandata2015, Hess = TRUE)
 summary(agemodelSubGenHealth)
 
-# Interaction Age*Pred
-interagemodelSubGenHealth <- polr(SubGenHealth ~ IrregularHours * Age, Cleandata2015, Hess = TRUE)
-summary(interagemodelSubGenHealth)
+# Age * Pred
+plusagemodelSubGenHealth <- polr(SubGenHealth ~ Age * IrregularHours, Cleandata2015, Hess = TRUE)
+summary(plusagemodelSubGenHealth)
 
-# Gender:
-gendermodelSubGenHealth <- polr(SubGenHealth ~ Gender, Cleandata2015, Hess = TRUE)
-summary(gendermodelSubGenHealth)
+# Gender + Age + Pred
+genageSubGenHealth <- polr(SubGenHealth ~ Gender + Age + IrregularHours, Cleandata2015, Hess = TRUE)
+summary(genageSubGenHealth)
 
-# Interaction Gender*Pred
-intergendmodelSubGenHealth <- polr(SubGenHealth ~ IrregularHours*Gender, Cleandata2015, Hess = TRUE)
-summary(intergendmodelSubGenHealth)
+# Gender*Age*Pred
+genageSubGenHealth <- polr(SubGenHealth ~ Gender*Age*IrregularHours, Cleandata2015, Hess = TRUE)
+summary(genageSubGenHealth)
 
-# Interaction Gender*Age*Pred
-interbothSubGenHealth <- polr(SubGenHealth ~ IrregularHours*Gender*Age, Cleandata2015, Hess = TRUE)
-summary(interbothSubGenHealth)
-
-#Education
-edumodelSubGenHealth <- polr(SubGenHealth ~ Education, Cleandata2015, Hess = TRUE)
+## Education + Pred
+edumodelSubGenHealth <- polr(SubGenHealth ~ Education + IrregularHours, Cleandata2015, Hess = TRUE)
 summary(edumodelSubGenHealth)
 
-#Education + pre
-eduplusmodelSubGenHealth <- polr(SubGenHealth ~ Education + IrregularHours, Cleandata2015, Hess = TRUE)
-summary(eduplusmodelSubGenHealth)
-
-#Physdem
-physmodelSubGenHealth <- polr(SubGenHealth ~ Physdem, Cleandata2015, Hess = TRUE)
-summary(physmodelSubGenHealth)
-
-#Physdem + pre
-physplusmodelSubGenHealth <- polr(SubGenHealth ~ Physdem + IrregularHours, Cleandata2015, Hess = TRUE)
-summary(physplusmodelSubGenHealth)
-
-#Mentdem
-mentmodelSubGenHealth <- polr(SubGenHealth ~ Mentdem, Cleandata2015, Hess = TRUE)
-summary(mentmodelSubGenHealth)
-
-#Mhysdem + pre
-mentplusmodelSubGenHealth <- polr(SubGenHealth ~ Mentdem + IrregularHours, Cleandata2015, Hess = TRUE)
-summary(mentplusmodelSubGenHealth)
-
-
-
-
-
-controlmodelSubGenHealth <- polr(SubGenHealth ~ Age + Education + Physdem + Mentdem,
-                                 Cleandata2015, Hess = TRUE)
-summary(controlmodelSubGenHealth)
-
-
-# Gender and Age
-genderagemodelSubGenHealth <- polr(SubGenHealth ~ Gender*Age,
-                                   Cleandata2015, Hess = TRUE)
-summary(genderagemodelSubGenHealth)
-
-# Gender and Age + Pred
-
-genderageplusmodelSubGenHealth <- polr(SubGenHealth ~ (Gender*Age*Mentdem),
-                                       Cleandata2015, Hess = TRUE)
-summary(genderagemodelSubGenHealth)
+## Education * Pred
+plusedumodelSubGenHealth <- polr(SubGenHealth ~ Education * IrregularHours, Cleandata2015, Hess = TRUE)
+summary(plusedumodelSubGenHealth)
