@@ -1,0 +1,14 @@
+
+## All Control variables
+controlmodelPsych <- glm(Psych ~ Gender + Age + Education + Mentdem,
+  Cleandata2015, family = "binomial")
+summary(controlmodelPsych)
+
+## All Control variables + Pred
+withcontrolmodelPsych <- glm(Psych ~ Gender + Age + Education + Mentdem + IrregularHours,
+ Cleandata2015, family = "binomial")
+summary(withcontrolmodelPsych)
+
+
+
+
