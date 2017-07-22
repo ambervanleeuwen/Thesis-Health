@@ -1,0 +1,10 @@
+
+# All control variables
+controlmodelMedSp <- glm(MedSp ~ Gender + Age + Education + Physdem,
+ Cleandata2015, family = "binomial")
+summary(controlmodelMedSp)
+
+# All control variables + Pred
+withcontrolmodelMedSp <- glm(MedSp ~ IrregularHours + Gender + Age + Education + Physdem,
+  Cleandata2015, family = "binomial")
+summary(withcontrolmodelMedSp)
