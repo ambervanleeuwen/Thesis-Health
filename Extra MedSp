@@ -1,0 +1,39 @@
+# Gender + Pred
+gendermodelMedSp <- glm(MedSp ~ Gender + IrregularHours, Cleandata2015, family = "binomial")
+summary(gendermodelMedSp) 
+
+# Gender * Pred
+intergendermodelMedSp <- glm(MedSp ~ Gender * IrregularHours, Cleandata2015, family = "binomial")
+summary(intergendermodelMedSp) 
+
+# Age + Pred
+agemodelMedSp <- glm(MedSp ~ Age + IrregularHours, Cleandata2015, family = "binomial")
+summary(agemodelMedSp) 
+
+# Age * Pred
+interagemodelMedSp <- glm(MedSp ~ Age * IrregularHours, Cleandata2015, family = "binomial")
+summary(interagemodelMedSp) 
+
+# Gender + Age + Pred
+bothmodelMedSp <- glm(MedSp ~ Gender + Age + IrregularHours , Cleandata2015, family = "binomial")
+summary(bothmodelMedSp) 
+
+# Gender * Age * Pred
+interbothmodelMedSp <- glm(MedSp ~ Gender * Age * IrregularHours , Cleandata2015, family = "binomial")
+summary(interbothmodelMedSp)
+
+# Education + Pred
+edumodelMedSp <- glm(MedSp ~ Education + IrregularHours, Cleandata2015, family = "binomial")
+summary(edumodelMedSp) 
+
+# Education * Pred
+interedumodelMedSp <- glm(MedSp ~ Education * IrregularHours, Cleandata2015, family = "binomial")
+summary(interedumodelMedSp) 
+
+# Physdem + Pred
+physmodelMedSp <- glm(MedSp ~ Physdem + IrregularHours, Cleandata2015, family = "binomial")
+summary(physmodelMedSp) 
+
+# Physdem * Pred
+interphysmodelMedSp <- glm(MedSp ~ Physdem * IrregularHours, Cleandata2015, family = "binomial")
+summary(interphysmodelMedSp) 
