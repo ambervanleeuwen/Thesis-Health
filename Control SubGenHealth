@@ -1,13 +1,13 @@
-# Control Variables
-# Rewriting contrast
+## Control Variables
+## Rewriting contrast
 contrasts(Cleandata2015$Education) <- contr.treatment(6, base = 2)
 
-## All control variables 
+## All control variables  
 controlmodelSubGenHealth <- polr(SubGenHealth ~ Gender + Age + Education,
   Cleandata2015, Hess = TRUE)
 summary(controlmodelSubGenHealth)
 
-# All Control with pred
+## All control variables + IrregularHours
 withcontrolmodelSubGenHealth <- polr(SubGenHealth ~ Gender + Age + Education + IrregularHours,
   Cleandata2015, Hess = TRUE)
 summary(withcontrolmodelSubGenHealth)
