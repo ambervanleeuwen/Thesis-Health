@@ -1,39 +1,39 @@
-# Gender + Pred
+## Gender + Pred
 gendermodelPsych <- glm(Psych ~ Gender + IrregularHours, Cleandata2015, family = "binomial")
 summary(gendermodelPsych) 
 
-# Gender * Pred
+## Gender * Pred
 intergendermodelPsych <- glm(Psych ~ Gender * IrregularHours, Cleandata2015, family = "binomial")
 summary(intergendermodelPsych) 
 
-# Age + Pred
+## Age + Pred
 agemodelPsych <- glm(Psych ~ Age + IrregularHours, Cleandata2015, family = "binomial")
 summary(agemodelPsych) 
 
-# Age * Pred
+## Age * Pred
 interagemodelPsych <- glm(Psych ~ Age * IrregularHours, Cleandata2015, family = "binomial")
 summary(interagemodelPsych) 
 
-# Gender + Age + Pred
+## Gender + Age + Pred
 bothmodelPsych <- glm(Psych ~ Gender + Age + IrregularHours, Cleandata2015, family = "binomial")
 summary(bothmodelPsych)
 
-# Gendre * Age * Pred
+## Gendre * Age * Pred
 interbothmodelPsych <- glm(Psych ~ Gender * Age * IrregularHours, Cleandata2015, family = "binomial")
 summary(interbothmodelPsych) 
 
-# Education + Pred
+## Education + Pred
 interedumodelPsych <- glm(Psych ~ Education + IrregularHours, Cleandata2015, family = "binomial")
 summary(interedumodelPsych)
 
-# Education * Pred
+## Education * Pred
 interedumodelPsych <- glm(Psych ~ Education * IrregularHours, Cleandata2015, family = "binomial")
 summary(interedumodelPsych)
 
-# Mentdem + Pred
+## Mentdem + Pred
 mentmodelPsych <- glm(Psych ~ Mentdem * IrregularHours, Cleandata2015, family = "binomial")
 summary(mentmodelPsych) 
 
-# Mentdem * Pred
+## Mentdem * Pred
 intermentmodelPsych <- glm(Psych ~ Mentdem + IrregularHours, Cleandata2015, family = "binomial")
 summary(intermentmodelPsych) 
