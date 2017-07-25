@@ -1,8 +1,6 @@
-# De eerste geeft begin punt aan. 
-# Paidwork2015$MedSp <- cut(Paidwork2015$MedSp, breaks = 0, 2, 4, 157, labels = "low", "medium","high")
-# It is important to reasure that the order of the factors is correct, otherwise the analyses could go wrong easily. 
+## It is important to ensure that the order of the factors is correct, otherwise the analyses could go wrong easily. 
 
-# Load Packages
+## Load Packages
 library(foreign)
 install.packages("dplyr")
 library("dplyr")
@@ -18,26 +16,26 @@ library(MASS)
 install.packages("caret")
 library(caret)
 
-# Load data.
+## Load data.
 Healthdata2015 <- read.dta("Thesis Project/Data/Health2015.dta")
 Workdata2015 <- read.dta("Thesis Project/Data/Work2015.dta")
 
-# Rename columns that are needed for analysis.
+## Rename columns that are needed for analysis.
 Namedwork2015 <- rename(Workdata2015, ID = nomem_encr, IrregularHours = cw15h425, PaidEmpl = cw15h000, Education = cw15h005, Physdem = cw15h416, Mentdem = cw15h420, Age = cw15h003) 
 Namedhealth2015 <-rename(Healthdata2015, ID = nomem_encr, SubGenHealth = ch15h004, Psych = ch15h207, MedSp = ch15h208, Gender = ch15h001)
 
-# Select the columns needed for further analysis.
+## Select the columns needed for further analysis.
 NewWork2015 <- select(Namedwork2015, ID, IrregularHours, PaidEmpl, Education, Physdem, Mentdem, Age)
 NewHealth2015 <- select(Namedhealth2015, ID, SubGenHealth, Psych, MedSp, Gender)
 
-# Merge the datasets based on ID.
+## Merge the datasets based on ID.
 Mergedset <- merge(NewHealth2015, NewWork2015, by = "ID")
 
-# Create a new dataset that only includes people with paid job. 
+## Create a new dataset that only includes people with paid job. 
 Paidwork2015 <- Mergedset[Mergedset$PaidEmpl == "yes", ]
 
-# Preprocessing the features
-# Create a new dataset that only included people younger than 76 years old. 
+## Preprocessing the variables
+## Create a new dataset that only included people younger than 76 years old. 
 GoodAge <- Paidwork2015[Paidwork2015$Age < 76, ]
 
 ## Exclude instances with NA for variable IrregularHours and MedSp (+Physio+Psych)
@@ -45,33 +43,32 @@ Cleandata2015 <- GoodAge[!is.na(GoodAge$IrregularHours), ]
 Cleandata2015 <- Cleandata2015[!is.na(Cleandata2015$MedSp), ]
 Cleandata2015 <- Cleandata2015[!is.na(Cleandata2015$Gender), ]
 
-# Leave out people that filled in 'poor' (since there were only 6)
+## Leave out people that filled in 'poor' (since there were only 6)
 Cleandata2015 <- Cleandata2015[Cleandata2015$SubGenHealth != 'poor', ]
+
+## Create extra dataset to test for certain aspects
 testen <- Cleandata2015
 testen$MedSp <- testen$MedSp
 testen$MedSp <- as.factor(testen$MedSp)
 testen$Psych <- as.factor(testen$Psych)
+## ggplot() +
+##  geom_bar(data = testen, mapping = aes(x = MedSp, position = "dodge"))
 
-ggplot() +
-  geom_bar(data = testen, mapping = aes(x = MedSp, position = "dodge"))
+## ggplot() +
+##  geom_bar(data = testen, mapping = aes(x = Psych, position = "dodge"))
 
-ggplot() +
-  geom_bar(data = testen, mapping = aes(x = Psych, position = "dodge"))
-
-
-# Remove values after outlier detection
+## Remove values after outlier detection
 Cleandata2015 <- Cleandata2015[Cleandata2015$MedSp < 7, ]
 Cleandata2015 <- Cleandata2015[Cleandata2015$Psych < 11, ]
 
-# INDEPENDENT VARIABLE.
+## INDEPENDENT VARIABLE.
 
-# Convert the variable work hour schedule (IrregularHours) into an ordered factor (from never to often)
+## Convert the variable work hour schedule (IrregularHours) into an ordered factor (from never to often)
 Cleandata2015$IrregularHours <- factor(Cleandata2015$IrregularHours, levels = c("never", "sometimes", "often"), ordered = TRUE)
-#Cleandata2015$IrregularHours <- factor(Cleandata2015$IrregularHours, levels = c("1", "2", "3"), ordered = TRUE)
-#Cleandata2015$IrregularHours <- as.numeric(Cleandata2015$IrregularHours)
+## Cleandata2015$IrregularHours <- factor(Cleandata2015$IrregularHours, levels = c("1", "2", "3"), ordered = TRUE)
+## Cleandata2015$IrregularHours <- as.numeric(Cleandata2015$IrregularHours)
 
-#Clean <- Cleandata2015
-# Create a plot to see the distribution of the different types of work hour schedules. 
+## Create a plot to see the distribution of the different types of work hour schedules. 
 ggplot() +
   geom_bar(data = Cleandata2015, mapping = aes(x = IrregularHours, fill = IrregularHours )) +
   ggtitle("Work hour schedule") +
@@ -81,14 +78,14 @@ ggplot() +
   scale_x_discrete( labels = c("Never", "Sometimes", "Often", "NA"), drop = FALSE) + 
   theme(legend.position = "none")
 
-# Dependent Variables 
+## DEPENDENT VARIABLES  
 
-# Convert the variable subjective general health (SubGenHealth) into an ordered factor (from poor to excellent)
-# Cleandata2015$SubGenHealth <- as.numeric(Cleandata2015$SubGenHealth)
+## Convert the variable subjective general health (SubGenHealth) into an ordered factor (from poor to excellent)
+## Cleandata2015$SubGenHealth <- as.numeric(Cleandata2015$SubGenHealth)
 Cleandata2015$SubGenHealth <- as.factor(Cleandata2015$SubGenHealth)
 Cleandata2015$SubGenHealth <- ordered(Cleandata2015$SubGenHealth)
 
-# Create a plot to show the distribution for this variable ("SubGenHealth")
+## Create a plot to show the distribution for this variable ("SubGenHealth")
 ggplot() +
   geom_bar(data = Cleandata2015, mapping = aes(x = SubGenHealth, fill = SubGenHealth)) + 
   ggtitle("Subjective General Health") +
@@ -98,47 +95,34 @@ ggplot() +
   scale_x_discrete(labels = c("Moderate", "Good", "Very Good", "Excellent")) + 
   theme(legend.position = "none")
 
-# Dependent variable physical health, including Medical specialist and Physiotherapist. 
-
-# Create three groups for the variable Medical specialist at the hospital (MedSp).
-# The average in this dataset was 0.8948 (though the average in the Netherlands is 3.683).
-# Three groups were based on the average of this dataset: below average, average and above average.
-# Cleandatatest <- Cleandata2015
-# Cleandatatest$MedSp <- as.factor(Cleandatatest$MedSp)
-
-## Dus bij deze moet alles hoger dan 6 weg. 
+## Maximum value MedSp is 6.  
 Cleandata2015$MedSp[Cleandata2015$MedSp == 0 ] <- 0
 Cleandata2015$MedSp[Cleandata2015$MedSp > 0 ] <- 1
 
-# Convert the variable MedSp into an ordered factor (from below to above average). 
+## Convert the variable MedSp into an ordered factor. 
 Cleandata2015$MedSp <- as.factor(Cleandata2015$MedSp)
-#Cleandata2015$MedSp <- ordered(Cleandata2015$MedSp)
+## Cleandata2015$MedSp <- ordered(Cleandata2015$MedSp)
 
-# Create a plot to show the dsitribution for this variable (MedSp). 
+## Create a plot to show the dsitribution for this variable (MedSp). 
 ggplot() + 
   geom_bar(data = Cleandata2015, mapping = aes(x = MedSp, fill = MedSp)) +
   ggtitle("Medical Specialist at hospital") +
   theme(plot.title = element_text(hjust = 0.5)) + 
   scale_y_continuous(name = "Frequency") +
   theme(axis.title.x=element_blank()) +
-#  xlab(drop = TRUE) +
-#  scale_x_discrete(labels = c("Average", "Average+", "Average++")) + 
-# scale_x_continuous( labels = NULL) + 
+##  xlab(drop = TRUE) +
+##  scale_x_discrete(labels = c("Average", "Average+", "Average++")) + 
+## scale_x_continuous( labels = NULL) + 
   theme(legend.position = "none")
 
 ## Dependent variable mental heath, consisting of variable Psychologist (Psych). 
 ## Create two groups for the variable Psychologist (Psych). 
-## The average in this dataset was 0.5 (though the average in the Netherlands is 1.467).
-## There is no "below average" group, only average and above average. 
-## Three groups were based on the average of this dataset: below average, average and above average.
-# Cleandatatest$Psych <- as.factor(Cleandatatest$Psych)
-
 Cleandata2015$Psych[Cleandata2015$Psych == 0  ] <- 0
 Cleandata2015$Psych[Cleandata2015$Psych > 0  ] <- 1
 
-## Convert the variable Psych into an ordered factor (from average to above average)
+## Convert the variable Psych into a factor
 Cleandata2015$Psych <- as.factor(Cleandata2015$Psych)
-#Cleandata2015$Psych <- ordered(Cleandata2015$Psych)
+## Cleandata2015$Psych <- ordered(Cleandata2015$Psych)
 
 ## Create a plot to show the dsitribution for this variable (Psych).
 ggplot() + 
@@ -170,8 +154,6 @@ ggplot() +
 ## Variable Age (Age).
 ## Divide the continuous variable age into groups. 
 Cleandata2015$Age <- cut(Cleandata2015$Age, c(18, 25, 35, 45, 55, 75), include.lowest = TRUE) 
-
-## Convert the variable Age into an ordered factor (from young to old)
 ##Cleandata2015$Age <- ordered(Cleandata2015$Age) 
 
 ## Create a plot to show the dsitribution for this variable (Age)
@@ -182,8 +164,7 @@ ggplot() +
   theme(plot.title = element_text(hjust = 0.5)) + 
   scale_y_continuous(name = "Frequency") +
   theme(legend.position = "none")
-
-
+  
 ## Variable Physically demanding work (PhysDem)
 ## Convert the variable Physically demanding work into an ordered factor (from never to often)
 Cleandata2015$Physdem <- factor(Cleandata2015$Physdem, levels = c("never", "sometimes", "often"))
@@ -262,9 +243,9 @@ Cleandata2015$Education <- fct_collapse(Cleandata2015$Education,
 Cleandata2015$Education <- fct_collapse(Cleandata2015$Education, 
  group5Other = c( "other") )
 
-## Convert the variable Education into an ordered factor (from low- to high educated)
+## Convert the variable Education into a factor
 Cleandata2015$Education <- as.factor(Cleandata2015$Education)
-##Cleandata2015$Education <- ordered(Cleandata2015$Education)
+## Cleandata2015$Education <- ordered(Cleandata2015$Education)
 
 ## Create a plot to show the distribution for this variable (Education)
 ggplot() + 
