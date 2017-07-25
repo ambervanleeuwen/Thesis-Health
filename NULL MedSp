@@ -1,0 +1,14 @@
+ggplot() + 
+  geom_bar(data = Cleandata2015, mapping = aes(x =MedSp, fill = IrregularHours), position="dodge") +
+  ggtitle("Work hour schedule and Medical Specialist") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(axis.title.x = element_blank()) +
+  scale_y_continuous(name = "Frequency") +
+  scale_x_discrete(labels = c("0", "1")) +
+  theme(legend.title = element_blank())
+
+nullmodelMedSp <- glm(MedSp ~ 1, Cleandata2015, family = "binomial")
+summary(nullmodelMedSp) 
+
+withmodelMedSp <- glm(MedSp ~ IrregularHours, Cleandata2015, family = "binomial")
+summary(withmodelMedSp) 
