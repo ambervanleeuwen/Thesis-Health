@@ -1,29 +1,24 @@
-(ctableinteragemodelSubGenHealth <- coef(summary(interagemodelSubGenHealth)))
-pvaluesinteragemodelSubGenHealth <- pnorm(abs(ctableinteragemodelSubGenHealth[, "t value"]), lower.tail = FALSE) * 2
-(ctableinteragemodelSubGenHealth <- cbind(ctableinteragemodelSubGenHealth, 
-  "p value" = round(pvaluesinteragemodelSubGenHealth,3)))
-
-# Gender + Pred
+## Gender + Pred
 gendmodelSubGenHealth <- polr(SubGenHealth ~ Gender + IrregularHours, Cleandata2015, Hess = TRUE)
 summary(gendmodelSubGenHealth)
 
-# Gender * Pred 
+## Gender * Pred 
 plusgendmodelSubGenHealth <- polr(SubGenHealth ~ Gender * IrregularHours, Cleandata2015, Hess = TRUE)
 summary(plusgendmodelSubGenHealth)
 
-# Age + Pred
+## Age + Pred
 agemodelSubGenHealth <- polr(SubGenHealth ~ Age + IrregularHours, Cleandata2015, Hess = TRUE)
 summary(agemodelSubGenHealth)
 
-# Age * Pred
+## Age * Pred
 plusagemodelSubGenHealth <- polr(SubGenHealth ~ Age * IrregularHours, Cleandata2015, Hess = TRUE)
 summary(plusagemodelSubGenHealth)
 
-# Gender + Age + Pred
+## Gender + Age + Pred
 genageSubGenHealth <- polr(SubGenHealth ~ Gender + Age + IrregularHours, Cleandata2015, Hess = TRUE)
 summary(genageSubGenHealth)
 
-# Gender*Age*Pred
+## Gender * Age * Pred
 genageSubGenHealth <- polr(SubGenHealth ~ Gender*Age*IrregularHours, Cleandata2015, Hess = TRUE)
 summary(genageSubGenHealth)
 
