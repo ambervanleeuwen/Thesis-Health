@@ -7,8 +7,10 @@ ggplot() +
   scale_x_discrete(labels = c("0", "1")) +
   theme(legend.title = element_blank())
 
+## Model MedSp without IrregularHours. 
 nullmodelMedSp <- glm(MedSp ~ 1, Cleandata2015, family = "binomial")
 summary(nullmodelMedSp) 
 
+## Model MedSp with IrregularHours.
 withmodelMedSp <- glm(MedSp ~ IrregularHours, Cleandata2015, family = "binomial")
 summary(withmodelMedSp) 
