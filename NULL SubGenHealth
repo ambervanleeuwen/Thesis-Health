@@ -1,7 +1,4 @@
-ggplot(data = Cleandata2015, mapping = aes(x =SubGenHealth, fill = MedSp)) +
-  geom_bar(position = "dodge")
-
-# First explanatory: 
+## First explanatory: 
 ggplot() + 
   geom_bar(data = Cleandata2015, mapping = aes(x =SubGenHealth, fill = IrregularHours), position="dodge") +
   ggtitle("Work hour schedule and Subjective General Health") +
@@ -12,18 +9,13 @@ ggplot() +
   theme(legend.title = element_blank())
 
 ## Perform the Ordinal Logistic Regression/ Proportional Odds Logistic Regression 
-# This table outputs coeffient table including the value of the coefficients, stanrdard errors,
-# t values, estimates for the intercepts, residual deviance ans AIC. AIC is the information criteria.
-# Less is better
+## AIC is the information criteria.
+## Lower AIC score is better
 
-# Model SubGenHealth without predictor. 
+# Model SubGenHealth without IrregularHours. 
 nullmodelSubGenHealth <- polr(SubGenHealth ~ 1, Cleandata2015, Hess = TRUE, method = "probit")
 summary(nullmodelSubGenHealth) 
 
-# Model SubGenHealth with predictor 
+# Model SubGenHealth with IrregularHours 
 withmodelSubGenHealth <- polr(SubGenHealth ~ IrregularHours, Cleandata2015, Hess = TRUE, method = "probit")
 summary(withmodelSubGenHealth) 
-
-(ctablewithmodelSubGenHealth <- coef(summary(withmodelSubGenHealth)))
-pvalueswithmodelSubGenHealth <- pnorm(abs(ctablewithmodelSubGenHealth[, "t value"]), lower.tail = FALSE) * 2
-(ctablewithmodelSubGenHealth <- cbind(ctablewithmodelSubGenHealth, "p value" = round(pvalueswithmodelSubGenHealth,3)))
