@@ -1,7 +1,7 @@
-## NULL model
+## Model Psych without IrregularHours.
 nullmodelPsych <- glm(Psych ~ 1, Cleandata2015, family = "binomial")
 summary(nullmodelPsych) 
 
-## With
+## Model Psych with IrregularHours.
 withmodelPsych <- glm(Psych ~ IrregularHours, Cleandata2015, family = "binomial")
 summary(withmodelPsych) 
